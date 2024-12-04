@@ -1,17 +1,18 @@
-# ใช้ Python 3.10 Slim เป็น base image
 FROM python:3.10-slim
 
-# ตั้งค่า working directory
+# ติดตั้ง dependencies
+RUN apt-get update && apt-get install -y libgl1 libglib2.0-0
+
+# ตั้งค่าไดเรกทอรี
 WORKDIR /app
 
-# คัดลอก requirements.txt และติดตั้ง dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# คัดลอกไฟล์ทั้งหมดไปยัง container
+# คัดลอกไฟล์โปรเจกต์
 COPY . .
 
-# เปิดพอร์ต 8000
+# ติดตั้ง Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# เปิดพอร์ต
 EXPOSE 8000
 
 # รันแอปพลิเคชัน
